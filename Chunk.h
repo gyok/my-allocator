@@ -1,4 +1,6 @@
 #pragma once
+#include <stddef.h>
+
 struct Chunk
 {
 	Chunk* mp_previous_chunk;

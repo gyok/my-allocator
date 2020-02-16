@@ -2,6 +2,8 @@
 #include <new>
 #include <iostream>
 
+#define DEBUG true
+
 MyAllocator::MyAllocator(size_t i_size)
 	: mp_start_buffer{ new char[i_size] }
 	, mp_end_buffer{ (char*)mp_start_buffer + i_size }
@@ -108,16 +110,18 @@ bool MyAllocator::IsPointerInAllocation(void* ip_pointer) {
 
 
 void MyAllocator::PrintAllocationMap(const char* word) {
-	std::cout << "================begin===================" << word << std::endl;
-	int i = 0;
-	for (Chunk* curr_chunk = mp_first_chunk;
-		curr_chunk != mp_last_chunk;
-		curr_chunk = curr_chunk->mp_next_chunk) {
-		std::cout << i++ << "=> prev: " << curr_chunk->mp_previous_chunk
-			<< " curr: " << curr_chunk
-			<< " next: " << curr_chunk->mp_next_chunk
-			<< " size: " << static_cast<double>(Chunk::GetAvailableSize(curr_chunk)) / 1024 / 1024
-			<< "M is_free: " << curr_chunk->m_is_free << " " << std::endl;
-	}
-	std::cout << "================end====================" << std::endl;
+    if (DEBUG) {
+        std::cout << "================begin===================" << word << std::endl;
+        int i = 0;
+        for (Chunk* curr_chunk = mp_first_chunk;
+            curr_chunk != mp_last_chunk;
+            curr_chunk = curr_chunk->mp_next_chunk) {
+            std::cout << i++ << "=> prev: " << curr_chunk->mp_previous_chunk
+                << " curr: " << curr_chunk
+                << " next: " << curr_chunk->mp_next_chunk
+                << " size: " << static_cast<double>(Chunk::GetAvailableSize(curr_chunk)) / 1024 / 1024
+                << "M is_free: " << curr_chunk->m_is_free << " " << std::endl;
+        }
+        std::cout << "================end====================" << std::endl;
+    }
 }

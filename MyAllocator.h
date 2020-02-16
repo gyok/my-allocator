@@ -1,5 +1,6 @@
 #pragma once
 #include "Chunk.h"
+#include <stddef.h>
 
 struct MyAllocator
 {
